@@ -1,56 +1,52 @@
 package base;
 
-import static org.junit.Assert.*;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.UUID;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
 import domain.PersonDomainModel;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+
 
 public class Person_Test {
-		
-	private static PersonDomainModel person1;
-	private static UUID person1UUID = UUID.randomUUID();			
-	
+	PersonDomainModel testPer = new PersonDomainModel();
 	@BeforeClass
-	public static void personInstance() throws Exception{
-		
-		Date person1Birth = null;
+	public static void setUpBeforeClass() throws Exception {
+	}
 
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		
-		 person1 = new PersonDomainModel();
-		 
-		try {
-			person1Birth = dateFormat.parse("1994-11-27");
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		person1.setPersonID(person1UUID);
-		person1.setFirstName("Mingkun");
-		person1.setMiddleName("a");
-		person1.setLastName("Chen");
-		person1.setBirthday(person1Birth);
-		person1.setCity("Elkton");
-		person1.setStreet("702 Stone Gate Blvd");
-		person1.setPostalCode(21921);
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
+	}
+
+	@Before
+	public void setUp() throws Exception {
+	}
+
+	@After
+	public void tearDown() throws Exception {
+	}
+
+	@Test
+	public void Addtest() {
+		testPer.setFirstName("Yifan");
+		testPer.setLastName("Li");
+		testPer.setCity("Newark");
+		testPer.setPostalCode(19711);
+		testPer.setStreet("606 Canton Drive");
+		testPer.setPersonID(null);
+		PersonDAL.addPerson(testPer);
+	}
+	@Test
+	public void Deletetest() {
+		PersonDAL.deletePerson(testPer.getPersonID());
+	}
+	@Test
+	public void Updatetest() {
 		
 	}
-	
-	
+	@Test
+	public void Gettest() {
+		
+	}
 
 }

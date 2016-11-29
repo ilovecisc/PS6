@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 import base.PersonDAL;
@@ -25,7 +26,6 @@ public class PersonOverviewController {
 
     @FXML
     private Label firstNameLabel;
-    @FXML Label middleNameLabel;
     @FXML
     private Label lastNameLabel;
     @FXML
@@ -87,7 +87,6 @@ public class PersonOverviewController {
         if (person != null) {
             // Fill the labels with info from the person object.
             firstNameLabel.setText(person.getFirstName());
-            middleNameLabel.setText(person.getMiddleName());
             lastNameLabel.setText(person.getLastName());
             streetLabel.setText(person.getStreet());
             postalCodeLabel.setText(Integer.toString(person.getPostalCode()));
@@ -96,7 +95,6 @@ public class PersonOverviewController {
         } else {
             // Person is null, remove all the text.
             firstNameLabel.setText("");
-            middleNameLabel.setText("");
             lastNameLabel.setText("");
             streetLabel.setText("");
             postalCodeLabel.setText("");
@@ -111,16 +109,14 @@ public class PersonOverviewController {
     @FXML
     private void handleDeletePerson() {
         int selectedIndex = personTable.getSelectionModel().getSelectedIndex();
-        Person selectedPerson = personTable.getSelectionModel().getSelectedItem();
         if (selectedIndex >= 0) {
-
         	
-        	UUID perID = selectedPerson.getPersonID();
-        	System.out.println("Try to delete: " + perID.toString());
+        	//PS6 - Calling the deletePerson method
+        	//		Figure out the value of perID
+        	ArrayList<PersonDomainModel> listofPersons = PersonDAL.getPeople();
+        	UUID perID = listofPersons.get(selectedIndex).getPersonID();
         	
-        	//TODO: Delete the person, call the deletePerson(perID) method
-        	//		in the DAL
-        	 
+        	PersonDAL.deletePerson(perID); 
             personTable.getItems().remove(selectedIndex);
             
             
@@ -146,19 +142,7 @@ public class PersonOverviewController {
         boolean okClicked = mainApp.showPersonEditDialog(tempPerson);
         if (okClicked) {
         	//PS6 - Calling the addPerson method
-        	PersonDomainModel per = new PersonDomainModel();
-        	per.setPersonID(tempPerson.getPersonID());
-        	per.setFirstName(tempPerson.getFirstName());
-        	per.setMiddleName(tempPerson.getMiddleName());
-        	per.setLastName(tempPerson.getLastName());
-        	per.setCity(tempPerson.getCity());
-        	per.setStreet(tempPerson.getStreet());
-        	per.setPostalCode(tempPerson.getPostalCode());
-        	per.setBirthday(tempPerson.getBirthday());
-        	
-        	//TODO: Delete the person, call the addPerson(perID) method
-        	//		in the DAL
-        	        	
+        	PersonDAL.addPerson(tempPerson);        	
             mainApp.getPersonData().add(tempPerson);
         }
     }
@@ -175,24 +159,8 @@ public class PersonOverviewController {
             if (okClicked) {
             	
             	//PS6 - Calling the updatePerson method
-            	PersonDomainModel updatePer = new PersonDomainModel();            	
-            	updatePer.setPersonID(selectedPerson.getPersonID());
-            	updatePer.setFirstName(selectedPerson.getFirstName());
-            	updatePer.setMiddleName(selectedPerson.getMiddleName());
-            	updatePer.setLastName(selectedPerson.getLastName());
-            	updatePer.setCity(selectedPerson.getCity());
-            	updatePer.setStreet(selectedPerson.getStreet());
-            	updatePer.setPostalCode(selectedPerson.getPostalCode());
-            	updatePer.setBirthday(selectedPerson.getBirthday());
-            	
-
-            	
-            	//TODO: Delete the person, call the updatePerson(perID) method
-            	//		in the DAL
-            	
-            	
+            	PersonDAL.updatePerson(selectedPerson);  
                 showPersonDetails(selectedPerson);
-                mainApp.RefreshPersonTable();
             }
 
         } else {
